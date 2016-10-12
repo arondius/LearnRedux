@@ -2,15 +2,8 @@ var redux = require('redux');
 
 console.log('Starting redux example');
 
-var stateDefault = {
-  name: 'Anonymous',
-  hobbies: [],
-  movies: []
-};
-
-var nextHobbyId = 1;
-var nextMovieId = 1;
-
+// Name reducer and action generators
+// ----------------
 var nameReducer = (state = 'Anonymous', action) => {
   switch(action.type) {
     case 'CHANGE_NAME':
@@ -20,6 +13,16 @@ var nameReducer = (state = 'Anonymous', action) => {
   };
 };
 
+var changeName = (name) => {
+  return {
+    type: 'CHANGE_NAME',
+    name
+  }
+}
+
+// Hobbies reducer and action generators
+// ----------------
+var nextHobbyId = 1;
 var hobbiesReducer = (state = [], action) => {
   switch(action.type) {
     case 'ADD_HOBBY':
@@ -37,6 +40,23 @@ var hobbiesReducer = (state = [], action) => {
   }
 };
 
+var addHobby = (hobby) => {
+  return {
+    type: 'ADD_HOBBY',
+    hobby
+  };
+};
+
+var removeHobby = (id) => {
+  return {
+    type: 'REMOVE_HOBBY',
+    id
+  };
+};
+
+// Movies reducer and action generators
+// ----------------
+var nextMovieId = 1;
 var moviesReducer = (state = [], action) => {
   switch(action.type) {
     case 'ADD_MOVIE':
@@ -54,6 +74,21 @@ var moviesReducer = (state = [], action) => {
       return state;
   }
 };
+
+var addMovie = (title, genre) => {
+  return {
+    type: 'ADD_MOVIE',
+    title,
+    genre
+  }
+};
+
+var removeMovie = (id) => {
+  return {
+    type: 'REMOVE_MOVIE',
+    id
+  }
+}
 
 var reducer = redux.combineReducers({
   name: nameReducer,
@@ -78,50 +113,11 @@ var unsubscribe = store.subscribe(() => {
 var currentState = store.getState();
 console.log('currentState ', currentState);
 
-store.dispatch({
-  type: 'CHANGE_NAME',
-  name: 'Arend'
-});
-
-store.dispatch({
-  type: 'ADD_HOBBY',
-  hobby: 'Running'
-});
-
-store.dispatch({
-  type: 'ADD_HOBBY',
-  hobby: 'Walking'
-});
-
-store.dispatch({
-  type: 'REMOVE_HOBBY',
-  id: 2
-});
-
-store.dispatch({
-  type: 'ADD_MOVIE',
-  title: 'Jaws',
-  genre: 'Thriller'
-});
-
-store.dispatch({
-  type: 'ADD_MOVIE',
-  title: 'Eternal sunshine of the spotless mind',
-  genre: 'Drama comedy'
-});
-
-store.dispatch({
-  type: 'ADD_MOVIE',
-  title: 'Oh brother where art thou?',
-  genre: 'Comedy'
-});
-
-store.dispatch({
-  type: 'REMOVE_MOVIE',
-  id: 1
-});
-
-store.dispatch({
-  type: 'CHANGE_NAME',
-  name: 'Olga'
-});
+store.dispatch(changeName('Arend'));
+store.dispatch(addHobby('walking'));
+store.dispatch(addHobby('running'));
+store.dispatch(removeHobby(2));
+store.dispatch(addMovie('Jaws', 'thriller'));
+store.dispatch(addMovie('Oh brother where art thou', 'thriller'));
+store.dispatch(removeMovie(2));
+store.dispatch(changeName('Olga'));
