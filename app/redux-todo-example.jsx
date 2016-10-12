@@ -19,13 +19,35 @@ var reducer = (state = stateDefault, action) => {
       return state;
   }
 };
-var store = redux.createStore(reducer);
+var store = redux.createStore(reducer, redux.compose(
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+));
+
+// Subscribe to changes
+var unsubscribe = store.subscribe(() => {
+  var state = store.getState();
+  document.getElementById('app').innerHTML = state.searchText;
+});
+// unsubscribe();
+
 var currentState = store.getState();
-console.log('currentState ', currentState);
 
 store.dispatch({
   type: 'CHANGE_SEARCH_TEXT',
   searchText: 'Zoeken'
 });
 
-console.log('searchText should be Zoeken', store.getState());
+store.dispatch({
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'Help'
+});
+
+store.dispatch({
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'Wateroverlast'
+});
+
+store.dispatch({
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'Roeiboot'
+});
